@@ -983,6 +983,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3328795009351916088, guid: d40121e5df606354795d05bbaa1e31e9, type: 3}
   m_PrefabInstance: {fileID: 6577962846271551309}
   m_PrefabAsset: {fileID: 0}
+--- !u!195 &792005491 stripped
+NavMeshAgent:
+  m_CorrespondingSourceObject: {fileID: 2289841950736476736, guid: d40121e5df606354795d05bbaa1e31e9, type: 3}
+  m_PrefabInstance: {fileID: 6577962846271551309}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1383,14 +1388,14 @@ MonoBehaviour:
   jumpForce: 10
   groundLayers:
     serializedVersion: 2
-    m_Bits: 1
-  mouseSensX: 5.41
-  mouseSensY: 14.52
-  minViewAngle: -21.3
-  maxViewAngle: 21.3
+    m_Bits: 4294967295
+  mouseSensX: 9.62
+  mouseSensY: 1.38
+  minViewAngle: 0
+  maxViewAngle: 47.5
   followTarget: {fileID: 991583888}
   bulletPrefab: {fileID: -1316287675511062749, guid: e4c225475dec8454893ca8d517200930, type: 3}
-  projectileForce: 100
+  projectileForce: 10
   maxBullets: 10
   minBullets: 0
 --- !u!54 &1052936943
@@ -2032,9 +2037,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1539807696}
     m_Modifications:
+    - target: {fileID: 821561488902720857, guid: d40121e5df606354795d05bbaa1e31e9, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863039737093000404, guid: d40121e5df606354795d05bbaa1e31e9, type: 3}
+      propertyPath: agent
+      value: 
+      objectReference: {fileID: 792005491}
+    - target: {fileID: 1863039737093000404, guid: d40121e5df606354795d05bbaa1e31e9, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2289841950736476736, guid: d40121e5df606354795d05bbaa1e31e9, type: 3}
       propertyPath: m_Radius
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2289841950736476736, guid: d40121e5df606354795d05bbaa1e31e9, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3328795009351916088, guid: d40121e5df606354795d05bbaa1e31e9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2075,6 +2096,10 @@ PrefabInstance:
     - target: {fileID: 3328795009351916088, guid: d40121e5df606354795d05bbaa1e31e9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4065438280068518660, guid: d40121e5df606354795d05bbaa1e31e9, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5935280653080636242, guid: d40121e5df606354795d05bbaa1e31e9, type: 3}
       propertyPath: m_Name

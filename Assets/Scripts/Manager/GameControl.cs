@@ -66,11 +66,11 @@ public partial class @GameControl: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Reload"",
                     ""type"": ""Button"",
-                    ""id"": ""6bbf6305-5c8f-4ac1-bc7e-64ecfb845613"",
+                    ""id"": ""ebe6c698-6462-46b2-81ea-2735ac42c876"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -186,7 +186,7 @@ public partial class @GameControl: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""e46e47f5-17ae-4707-b541-9d464a0374ba"",
+                    ""id"": ""19ab27aa-5ade-44ca-b5c5-330986d600e9"",
                     ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
