@@ -71,6 +71,15 @@ public partial class @GameControl: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Spawn"",
+                    ""type"": ""Button"",
+                    ""id"": ""a8a4ef07-9862-44d2-a927-2914a841a013"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -194,6 +203,17 @@ public partial class @GameControl: IInputActionCollection2, IDisposable
                     ""action"": ""Reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""98646a9f-c4be-4c61-aaa3-2fd4a08a4020"",
+                    ""path"": ""<Keyboard>/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Spawn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -263,6 +283,7 @@ public partial class @GameControl: IInputActionCollection2, IDisposable
         m_Game_Shoot = m_Game.FindAction("Shoot", throwIfNotFound: true);
         m_Game_Look = m_Game.FindAction("Look", throwIfNotFound: true);
         m_Game_Reload = m_Game.FindAction("Reload", throwIfNotFound: true);
+        m_Game_Spawn = m_Game.FindAction("Spawn", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Newaction = m_UI.FindAction("New action", throwIfNotFound: true);
@@ -335,6 +356,7 @@ public partial class @GameControl: IInputActionCollection2, IDisposable
     private readonly InputAction m_Game_Shoot;
     private readonly InputAction m_Game_Look;
     private readonly InputAction m_Game_Reload;
+    private readonly InputAction m_Game_Spawn;
     public struct GameActions
     {
         private @GameControl m_Wrapper;
@@ -344,6 +366,7 @@ public partial class @GameControl: IInputActionCollection2, IDisposable
         public InputAction @Shoot => m_Wrapper.m_Game_Shoot;
         public InputAction @Look => m_Wrapper.m_Game_Look;
         public InputAction @Reload => m_Wrapper.m_Game_Reload;
+        public InputAction @Spawn => m_Wrapper.m_Game_Spawn;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -368,6 +391,9 @@ public partial class @GameControl: IInputActionCollection2, IDisposable
             @Reload.started += instance.OnReload;
             @Reload.performed += instance.OnReload;
             @Reload.canceled += instance.OnReload;
+            @Spawn.started += instance.OnSpawn;
+            @Spawn.performed += instance.OnSpawn;
+            @Spawn.canceled += instance.OnSpawn;
         }
 
         private void UnregisterCallbacks(IGameActions instance)
@@ -387,6 +413,9 @@ public partial class @GameControl: IInputActionCollection2, IDisposable
             @Reload.started -= instance.OnReload;
             @Reload.performed -= instance.OnReload;
             @Reload.canceled -= instance.OnReload;
+            @Spawn.started -= instance.OnSpawn;
+            @Spawn.performed -= instance.OnSpawn;
+            @Spawn.canceled -= instance.OnSpawn;
         }
 
         public void RemoveCallbacks(IGameActions instance)
@@ -503,6 +532,7 @@ public partial class @GameControl: IInputActionCollection2, IDisposable
         void OnShoot(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+        void OnSpawn(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

@@ -36,6 +36,11 @@ public class InputManager
             myplayer.Reload();
         };
         
+        _Controls.Game.Spawn.started += hello =>
+        {
+            myplayer.ResetToCheckPoint();
+        };
+        
         _Controls.Permanent.Enable();
     }
 

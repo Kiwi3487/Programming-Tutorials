@@ -1,61 +1,54 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
-    public Transform player;
-    public LayerMask groundlayer, playerlayer;
-    Rigidbody enemy;
-    public Vector3 walkpoint;
-    private bool walkpointset = false;
-    public float walkPointRange;
-    public bool playerInSightRange, playerInAttackRange;
-    public float sightRange, attackRange;
+    public NavMeshAgent agent;
+    public float wanderRange; // radius of the wander area
+    public float chaseRange; // range for chasing the player
+    public Transform centrePoint; // centre of the wander area
+    private Transform player;
 
-    public GameObject projectile;
-    public GameObject projectilePosition;
-
-    public float timeBetweenAttack;
-
-    private bool alreadyAttacked;
-    // Start is called before the first frame update
     void Start()
     {
-        
+        agent = GetComponent<NavMeshAgent>();
+        player = GameObject.FindGameObjectWithTag("Player").transform; // Assuming player tag is "Player"
     }
 
-    // Update is called once per frame
     void Update()
     {
-        playerInSightRange = Physics.CheckSphere(transform.position,sightRange,playerlayer);
-        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, playerlayer);
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        if (playerInSightRange && playerInAttackRange) Attack();
-
-    }
-
-    public void Attack()
-    {
-        transform.LookAt(player);
-
-        if (alreadyAttacked)
+        if (distanceToPlayer <= chaseRange)
         {
-            if (!alreadyAttacked)
+            // Player is within chase range, chase the player
+            agent.SetDestination(player.position);
+        }
+        else if (agent.remainingDistance <= agent.stoppingDistance)
+        {
+            // Done with path, wander randomly
+            Vector3 wanderPoint;
+            if (RandomPoint(centrePoint.position, wanderRange, out wanderPoint))
             {
-                Rigidbody rb = Instantiate(projectile, projectilePosition.transform.position, Quaternion.identity)
-                    .GetComponent<Rigidbody>();
-                rb.AddForce(transform.forward*32f, ForceMode.Impulse);
-                rb.AddForce(transform.up*8f, ForceMode.Impulse);
-
-                alreadyAttacked = true;
-                Invoke(nameof(ResetAttack), timeBetweenAttack);
+                Debug.DrawRay(wanderPoint, Vector3.up, Color.blue, 1.0f);
+                agent.SetDestination(wanderPoint);
             }
         }
     }
 
-    public void ResetAttack()
+    bool RandomPoint(Vector3 center, float range, out Vector3 result)
     {
-        alreadyAttacked = false;
+        Vector3 randomPoint = center + Random.insideUnitSphere * range;
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
+        {
+            result = hit.position;
+            return true;
+        }
+
+        result = Vector3.zero;
+        return false;
     }
 }

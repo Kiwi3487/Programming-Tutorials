@@ -1,10 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
+    [SerializeField] private float originalSpeed;
     [SerializeField] private float speed;
+    [SerializeField] private float increasedSpeed;
+    [SerializeField] private float speedPowerDuration;
+    private float speedPowerTimer;
+    
     [SerializeField] private float jumpForce;
+    private bool hasJumpBoost;
     [SerializeField] private LayerMask groundLayers;
     private Vector2 currentRotation;
     //Camera movement
@@ -22,6 +30,13 @@ public class Player : MonoBehaviour
     [SerializeField] private int maxBullets = 5;
     [SerializeField] private int minBullets = 0;
     private int currentBullets;
+    
+    //Check points
+    [SerializeField] private GameObject player;
+    [SerializeField] private List<GameObject> checkPoints;
+    [SerializeField] private Vector3 vectorPoint;
+    [SerializeField] private float dead;
+    private int totalDeath = 0;
     
     
     private Vector2 currentAngle;
@@ -43,6 +58,21 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (player.transform.position.y < -dead)
+        {
+            player.transform.position = vectorPoint;
+            totalDeath++;
+        }
+        
+        if (speedPowerTimer > 0f)
+        {
+            speedPowerTimer -= Time.deltaTime;
+            if (speedPowerTimer <= 0f)
+            {
+                speed = originalSpeed;
+            }
+        }
+        
         transform.position += transform.rotation * (speed * Time.deltaTime * _moveDirection);
         CheckGround();
     }
@@ -94,9 +124,55 @@ public class Player : MonoBehaviour
         currentBullets += bulletAmount;
         Debug.Log("Shoot MOAR");
     }
-    
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("CheckPoint"))
+        {
+            vectorPoint = player.transform.position;
+        }
+        if (other.gameObject.CompareTag("Win"))
+        {
+            WinScreen();
+        }
+        if (other.gameObject.CompareTag("SpeedPower"))
+        {
+            ApplySpeedPower();
+            other.gameObject.SetActive(false);
+        }
+        if (other.gameObject.CompareTag("JumpBoost"))
+        {
+            ApplyJumpBoost();
+            other.gameObject.SetActive(false);
+        }
+    }
+
+    private void ApplySpeedPower()
+    {
+        speed = increasedSpeed;
+        speedPowerTimer = speedPowerDuration;
+    }
+
+    private void ApplyJumpBoost()
+    {
+        hasJumpBoost = true;
+        jumpForce *= 2; 
+    }
+    public void ResetToCheckPoint()
+    {
+        player.transform.position = vectorPoint;
+    }
+
     public int GetCurrentBullets()
     {
         return currentBullets;
+    }
+    public int GetCurrentDeaths()
+    {
+        return totalDeath;
+    }
+    public void WinScreen()
+    {
+        SceneManager.LoadScene("Scenes/Win");
     }
 }
